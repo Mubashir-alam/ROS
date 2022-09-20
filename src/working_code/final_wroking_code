@@ -1,0 +1,66 @@
+
+
+#include <ros.h>
+#include <std_msgs/Empty.h>
+#include <std_msgs/String.h>
+
+
+ros::NodeHandle  nh;
+
+
+void messageCb( const std_msgs::String& toggle_msg)
+{
+  
+
+nh.loginfo(toggle_msg.data);
+
+
+if(toggle_msg.data[0] == 'M')
+{  
+  digitalWrite(13, HIGH-digitalRead(13));   // blink the led
+  delay(2000);
+  digitalWrite(13, LOW-digitalRead(13));
+//  nh.loginfo(toggle_msg.data);
+nh.loginfo("Recived M if-statment ");  
+}
+
+if (toggle_msg.data[0] == 'R')
+{  
+//  digitalWrite(13, HIGH-digitalRead(13));   // blink the led
+//  nh.loginfo(toggle_msg.data);
+  digitalWrite(12, HIGH-digitalRead(12));   // blink the led
+  delay(2000);
+  digitalWrite(12, LOW-digitalRead(12));
+nh.loginfo("Recived R if-statment ");  
+}
+
+if (toggle_msg.data[0] == 's')
+{  
+//  digitalWrite(13, HIGH-digitalRead(13));   // blink the led
+//  nh.loginfo(toggle_msg.data);
+ digitalWrite(11, HIGH-digitalRead(11));   // blink the led
+  delay(2000);
+  digitalWrite(11, LOW-digitalRead(11));
+nh.loginfo("Recived s if-statment ");  
+}
+
+}
+
+
+ros::Subscriber<std_msgs::String> sub("talker_vision", &messageCb );
+
+void setup()
+{ 
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
+//  nh.getHardware()->setBaud(9600);
+  nh.initNode();
+  nh.subscribe(sub);
+}
+
+void loop()
+{  
+  nh.spinOnce();
+  delay(1);
+}
